@@ -19,7 +19,7 @@ const Statistic = ({ text, value }) => {
 
 const Statistics = ({ good, neutral, bad }) => {
   const total = good + neutral + bad;
-  const average = ((good - bad) / total) * 100;
+  const average = ((good - bad) / total);
   const positive = good / total * 100;
 
   if (total > 0) {
@@ -29,7 +29,7 @@ const Statistics = ({ good, neutral, bad }) => {
         <Statistic text="neutral" value={neutral} />
         <Statistic text="bad" value={bad} />
         <Statistic text="all" value={total} />
-        <Statistic text="average" value={average + "%"} />
+        <Statistic text="average" value={average} />
         <Statistic text="positive" value={positive + "%"} />
       </>
     );
