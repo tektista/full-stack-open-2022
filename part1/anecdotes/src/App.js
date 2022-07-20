@@ -9,7 +9,7 @@ const Anecdote = ({ anecdote }) => {
 };
 
 const AnecdoteVoteCount = ({ selected, votesArray }) => {
-  return <p>{votesArray[selected]}</p>;
+  return <p>has {votesArray[selected]} votes.</p>;
 };
 
 const Button = ({ text, onClick }) => {
