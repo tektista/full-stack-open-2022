@@ -34,7 +34,6 @@ const Statistics = ({ good, neutral, bad }) => {
       </>
     );
   }
-
   return <div>No feedback given</div>;
 };
 
