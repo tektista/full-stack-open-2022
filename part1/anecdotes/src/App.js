@@ -8,8 +8,8 @@ const Anecdote = ({ anecdote }) => {
   return <p> {anecdote} </p>;
 };
 
-const AnecdoteVoteCount = ({ selected, votesArray }) => {
-  return <p>has {votesArray[selected]} votes.</p>;
+const AnecdoteVoteCount = ({ votes }) => {
+  return <p>has {votes} votes.</p>;
 };
 
 const Button = ({ text, onClick }) => {
@@ -42,13 +42,20 @@ const App = () => {
     setVotes(copy);
   };
 
+  const highestVotes = Math.max(...votes);
+
+  const winningAnecdote = anecdotes[votes.indexOf(highestVotes)];
+
   return (
     <>
       <Header text={"Anecdote of the day"} />
       <Anecdote anecdote={anecdotes[selected]} />
-      <AnecdoteVoteCount selected={selected} votesArray={votes} />
+      <AnecdoteVoteCount votes={votes[selected]} />
       <Button text={"vote"} onClick={castVote}></Button>
       <Button text={"next anecdote"} onClick={nextAnecdote}></Button>
+
+      <Header text={"Anecdote with most votes"} />
+      <Anecdote anecdote={winningAnecdote} />
     </>
   );
 };
