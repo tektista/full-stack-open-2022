@@ -8,6 +8,10 @@ const Anecdote = ({ anecdote }) => {
   return <p> {anecdote} </p>;
 };
 
+const AnecdoteVoteCount = ({ selected, votesArray }) => {
+  return <p>{votesArray[selected]}</p>;
+};
+
 const Button = ({ text, onClick }) => {
   return <button onClick={onClick}> {text}</button>;
 };
@@ -25,14 +29,25 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
 
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+
+  //get a random anecdote using math random
   const nextAnecdote = () => {
     setSelected(Math.floor(Math.random() * 6));
+  };
+
+  const castVote = () => {
+    const copy = [...votes];
+    copy[selected] += 1;
+    setVotes(copy);
   };
 
   return (
     <>
       <Header text={"Anecdote of the day"} />
       <Anecdote anecdote={anecdotes[selected]} />
+      <AnecdoteVoteCount selected={selected} votesArray={votes} />
+      <Button text={"vote"} onClick={castVote}></Button>
       <Button text={"next anecdote"} onClick={nextAnecdote}></Button>
     </>
   );
