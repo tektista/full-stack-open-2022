@@ -37,7 +37,7 @@ const Course = ({ header, content, total }) => (
 const Courses = ({ courseArray }) => (
   <>
     {courseArray.map((course) => (
-      <li> <Course header={course.name} content={course} total={ course.parts} /></li>
+      <li key={course.id}> <Course header={course.name} content={course} total={ course.parts} /></li>
     ))}
   </>
 );
