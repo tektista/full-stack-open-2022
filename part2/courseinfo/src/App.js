@@ -1,76 +1,69 @@
-const Header = ({ course }) => <h1>{course}</h1>
+const Header = ({ courseName }) => <h1>{courseName}</h1>;
 
-const Total = ({ partsArray }) => <p> 
-  {}
-</p>
+const Total = ({ partArray }) => {
+  const total = partArray.reduce(
+    (prevValue, currentValue) => prevValue + currentValue.exercises,
+    0
+  );
+  return <p>Total: {total}</p>;
+};
 
-const Part = ({partName, noOfExercises}) => 
-<>
-  {partName} {noOfExercises}
-</>
-
-const Content = ({ course }) =>
-
+const Part = ({ partName, noOfExercises }) => (
   <>
-
-<li>
-  {course.parts.map(part => <li key={part.id}> <Part partName={part.name} noOfExercises={part.exercises} /></li>)  }
-</li>
-
+    {partName} {noOfExercises}
   </>
-  const Course = ({courseName}) => 
+);
+
+const Content = ({ course }) => (
   <>
-    <Header course={courseName} />
+    {course.parts.map((part) => (
+      <li key={part.id}>
+        {" "}
+        <Part partName={part.name} noOfExercises={part.exercises} />
+      </li>
+    ))}
   </>
+);
+
+const Course = ({ header, content, total }) => (
+  <>
+    <Header courseName={header} />
+    <Content course={content} />
+    <Total partArray={total} />
+  </>
+);
 
 const App = () => {
   const course = {
     id: 1,
-    name: 'Half Stack application development',
+    name: "Half Stack application development",
     parts: [
       {
-        name: 'Fundamentals of React',
+        name: "Fundamentals of React",
         exercises: 10,
-        id: 1
+        id: 1,
       },
       {
-        name: 'Using props to pass data',
+        name: "Using props to pass data",
         exercises: 7,
-        id: 2
+        id: 2,
       },
       {
-        name: 'State of a component',
+        name: "State of a component",
         exercises: 14,
-        id: 3
-      }
-    ]
-  }
-
-  // const total = course.parts.reduce(() => (initialValue, currentValue) => {
-  //   return initialValue + currentValue;
-  // }, 0);
-
-  //test
-
+        id: 3,
+      },
+    ],
+  };
 
   return (
     <>
-      <Course courseName={course.name} />
-      <Content course={course} />
-      <Total partArray={course.parts} />
-
+      <Course header={course.name} content={course} total={course.parts} />
+      {/* <Header courseName={course.name} /> */}
+      {/* <Content course={course} /> */}
+      {/* <Total partArray={course.parts} /> */}
     </>
+  );
+};
 
-
-
-
-
-    // <div>
-    //   <Header course={course} />
-    //   <Content parts={parts} />
-    //   <Total sum={parts[0].exercises + parts[1].exercises + parts[2].exercises} />
-    // </div>
-  )
-}
-
-export default App
+export default App;
