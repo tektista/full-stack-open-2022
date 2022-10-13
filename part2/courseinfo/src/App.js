@@ -39,7 +39,10 @@ import Course from './components/Course'
 const Courses = ({ courseArray }) => (
   <>
     {courseArray.map((course) => (
-      <li key={course.id}> <Course header={course.name} content={course} total={ course.parts} /></li>
+      <li key={course.id}>
+        {" "}
+        <Course header={course.name} content={course} total={course.parts} />
+      </li>
     ))}
   </>
 );
