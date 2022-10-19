@@ -8,12 +8,26 @@ const App = () => {
     event.preventDefault();
     console.log("button clicked", event.target);
 
+    let found = 0;
+
     const personObject = {
       name: newName,
     };
 
     // add the new person to the persons array
-    setPersons(persons.concat(personObject));
+
+    for (let i = 0; i < persons.length; i++) {
+      if (persons[i].name === newName) {
+        found = 1;
+      }
+    }
+    if (found == 0) {
+      setPersons(persons.concat(personObject));
+    }
+
+    if (found == 1) {
+      window.alert(newName + " is already in the phonebook");
+    }
 
     // reset the value of newName for next addition
     setNewName("");
@@ -46,7 +60,12 @@ const App = () => {
       </form>
 
       <h2>Numbers</h2>
-      <div> {persons.map((person) =>  <div key={person.name}> {person.name} </div>)}</div>
+      <div>
+        {" "}
+        {persons.map((person) => (
+          <div key={person.name}> {person.name} </div>
+        ))}
+      </div>
     </div>
   );
 };
