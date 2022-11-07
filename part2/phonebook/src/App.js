@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+import Filter from "./components/filter";
+import PersonForm from "./components/personform";
+import Persons from "./components/persons";
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: 123, id: 1 },
@@ -9,10 +13,6 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [filterName, setNewFilterName] = useState("");
-
-  const namesToShow = showAll
-  ? persons
-  : persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase()));
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -74,27 +74,49 @@ const App = () => {
   const changeShowAll = () => {
     setShowAll(!showAll);
     console.log(showAll);
-
   };
 
+  const namesToShow = showAll
+    ? persons
+    : persons.filter((person) =>
+        person.name.toLowerCase().includes(filterName.toLowerCase())
+      );
 
+  // const names = () => {
+  //   {
+  //     namesToShow.map((person) => (
+  //       <div key={person.name}>
+  //         {person.name} {person.number}
+  //       </div>
+  //     ));
+  //   }
+  // };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
+
+      <Filter inputValue={filterName} onChangeFunction={handleFilterChange} />
+
+      {/* <div>
         filter shown with <input onChange={handleFilterChange}></input>
       </div>
 
-      <button onClick={changeShowAll}> filter </button>
+      <button onClick={changeShowAll}> filter </button> */}
 
       <h2> add a new </h2>
 
-      <form onSubmit={addPerson}>
+      <PersonForm
+        onSubmitFunction={addPerson}
+        nameInputValue={newName}
+        nameInputOnChangeFunction={handleNameChange}
+        numberInputValue={newNumber}
+        numberInputOnChangeFunction={handleNumberChange}
+      />
+
+      {/* <form onSubmit={addPerson}>
         <div>
-          {/* input value changed to newName which is ian initial useState value
-          onChange required to be able to edit input field - we need an event handler
-          that syncs changes made to input with component's state */}
+         
           name: <input value={newName} onChange={handleNameChange} />
         </div>
 
@@ -105,22 +127,13 @@ const App = () => {
         <div>
           <button type="submit">add</button>
         </div>
-      </form>
+      </form> */}
 
       <h2>Numbers</h2>
 
-      <div>
-        {namesToShow.map((person) => (
-          <div key={person.name}>
-            {person.name} {person.number}
-          </div>
-        ))}
-      </div>
+      <Persons persons={namesToShow} />
 
-
-      <div>
-
-      </div>
+      <div></div>
     </div>
   );
 };
