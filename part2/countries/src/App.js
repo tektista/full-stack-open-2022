@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+// - Your API key is 044166a82531a2aade90c91a59fb074b
+
 const Filter = ({ onChange }) => (
   <>
     <div>
@@ -9,18 +11,31 @@ const Filter = ({ onChange }) => (
   </>
 );
 
-const Countries = ({ updatedCountries }) => {
+const Countries = ({ updatedCountries, showClickHandler }) => {
+  //if list of updated countries is one, show the view for that remaining country
   if (updatedCountries.length === 1) {
     const country = updatedCountries[0];
     return <CountryData c={country} />;
   }
 
+  //if list is greater than 10, too many
   if (updatedCountries.length > 10) {
     return <div>Too many matches, specify another filter.</div>;
   }
-
+  
+  //otherwise return each country, with a show button
   return updatedCountries.map((country) => (
-    <div key={country.name.official}>{country.name.common}</div>
+    <div key={country.name.official}>
+      {country.name.common}{" "}
+      {/* when clicked, pass the common name of the clicked country to showClickHandler */}
+      <button
+        // store coun
+        
+        onClick={() => showClickHandler(country.name.common)}
+      >
+        show
+      </button>
+    </div>
   ));
 };
 
@@ -84,10 +99,24 @@ const App = () => {
     );
   };
 
+  const handleShowClick = (countryName) => {
+    //update the filter to
+    setCountryName(countryName);
+
+    setUpdatedCountries(
+      countries.filter((country) =>
+        country.name.common.toLowerCase().includes(countryName.toLowerCase())
+      )
+    );
+  };
+
   return (
     <>
       <Filter onChange={handleNameChange} />
-      <Countries updatedCountries={updatedCountries} />
+      <Countries
+        updatedCountries={updatedCountries}
+        showClickHandler={handleShowClick}
+      />
     </>
   );
 };
