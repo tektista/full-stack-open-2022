@@ -22,17 +22,13 @@ const Countries = ({ updatedCountries, showClickHandler }) => {
   if (updatedCountries.length > 10) {
     return <div>Too many matches, specify another filter.</div>;
   }
-  
+
   //otherwise return each country, with a show button
   return updatedCountries.map((country) => (
     <div key={country.name.official}>
       {country.name.common}{" "}
       {/* when clicked, pass the common name of the clicked country to showClickHandler */}
-      <button
-        // store coun
-        
-        onClick={() => showClickHandler(country.name.common)}
-      >
+      <button onClick={() => showClickHandler(country.name.common)}>
         show
       </button>
     </div>
@@ -88,10 +84,12 @@ const App = () => {
 
   console.log("render", countries.length, "countries");
 
+  //handler for input change in input field
   const handleNameChange = (event) => {
-    console.log(event.target.value);
+    //set CountryName to the value of the input field every time it is pressed
     setCountryName(event.target.value);
 
+    //filter countries based on updated country name in input field
     setUpdatedCountries(
       countries.filter((country) =>
         country.name.common.toLowerCase().includes(countryName.toLowerCase())
@@ -99,10 +97,12 @@ const App = () => {
     );
   };
 
+  //handler for showing the view of each country
   const handleShowClick = (countryName) => {
     //update the filter to
     setCountryName(countryName);
 
+    //filter countries based on updated country name in input field
     setUpdatedCountries(
       countries.filter((country) =>
         country.name.common.toLowerCase().includes(countryName.toLowerCase())
@@ -117,6 +117,8 @@ const App = () => {
         updatedCountries={updatedCountries}
         showClickHandler={handleShowClick}
       />
+
+      
     </>
   );
 };
