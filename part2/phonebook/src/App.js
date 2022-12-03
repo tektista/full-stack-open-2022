@@ -46,10 +46,24 @@ const App = () => {
         console.log(response.data);
         setPersons(persons.concat(response.data));
         setNewName("");
+        setNewNumber("");
       });
     } else {
-      window.alert(`${newName} is already in the phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already in the phonebook, replace the old number?`
+        ) === true
+      ) {
+        const person = persons.find((person) => person.name === newName);
+        const changedPerson = { ...person, number: newNumber };
+        personService.update(person.id, changedPerson).then((response) => {
+          setPersons(
+            persons.map((p) => (p.id !== person.id ? p : response.data))
+          );
+        });
+      }
       setNewName("");
+      setNewNumber("");
     }
   };
 
