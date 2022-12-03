@@ -53,6 +53,22 @@ const App = () => {
     }
   };
 
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`) === true) {
+      personService.remove(id).then((response) => {
+        console.log(response.data);
+
+        setPersons(
+          persons.filter((person) => {
+            return person.id !== id;
+          })
+        );
+
+        console.log(persons);
+      });
+    }
+  };
+
   const handleNameChange = (event) => {
     console.log(event.target.value);
 
@@ -104,12 +120,6 @@ const App = () => {
 
       <Filter inputValue={filterName} onChangeFunction={handleFilterChange} />
 
-      {/* <div>
-        filter shown with <input onChange={handleFilterChange}></input>
-      </div>
-
-      <button onClick={changeShowAll}> filter </button> */}
-
       <h2> add a new </h2>
 
       <PersonForm
@@ -120,24 +130,9 @@ const App = () => {
         numberInputOnChangeFunction={handleNumberChange}
       />
 
-      {/* <form onSubmit={addPerson}>
-        <div>
-         
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form> */}
-
       <h2>Numbers</h2>
 
-      <Persons persons={namesToShow} />
+      <Persons persons={namesToShow} deleteOnClickHandler={deletePerson} />
 
       <div></div>
     </div>
