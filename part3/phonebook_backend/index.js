@@ -61,8 +61,19 @@ app.get(`/api/persons/:id`, (request, response) => {
   if (response) {
     response.send(person);
   } else {
-    response.status(404).end;
+    response.status(404).end();
   }
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  console.log(id);
+
+  console.log(persons);
+  persons = persons.filter((person) => person.id !== id);
+  console.log(persons);
+
+  response.status(204).end();
 });
 
 const PORT = 3001;
