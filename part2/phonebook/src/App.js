@@ -5,7 +5,6 @@ import Persons from "./components/persons";
 import axios from "axios";
 import personService from "./services/personsService";
 
-
 const Notification = ({ message }) => {
   if (message === null) {
     return null;
@@ -20,7 +19,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [filterName, setNewFilterName] = useState("");
-  const [message, setMessage] = useState("something happened");
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     console.log("effect");
@@ -56,9 +55,11 @@ const App = () => {
         console.log(response.data);
         setPersons(persons.concat(response.data));
         setMessage(`${newName} was succesfully added`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
         setNewName("");
         setNewNumber("");
-
       });
     } else {
       if (
@@ -74,6 +75,9 @@ const App = () => {
           );
 
           setMessage(`${newName}'s number was succesfully updated`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         });
       }
       setNewName("");
@@ -150,7 +154,7 @@ const App = () => {
 
       <h2> add a new </h2>
 
-      <Notification message={message}/>
+      <Notification message={message} />
 
       <PersonForm
         onSubmitFunction={addPerson}
