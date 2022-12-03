@@ -69,16 +69,22 @@ const App = () => {
       ) {
         const person = persons.find((person) => person.name === newName);
         const changedPerson = { ...person, number: newNumber };
-        personService.update(person.id, changedPerson).then((response) => {
-          setPersons(
-            persons.map((p) => (p.id !== person.id ? p : response.data))
-          );
+        personService
+          .update(person.id, changedPerson)
+          .then((response) => {
+            setPersons(
+              persons.map((p) => (p.id !== person.id ? p : response.data))
+            );
 
-          setMessage(`${newName}'s number was succesfully updated`);
-          setTimeout(() => {
-            setMessage(null);
-          }, 5000);
-        });
+            setMessage(`${newName}'s number was succesfully updated`);
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
+          })
+
+          .catch((error) => {
+            setMessage(`${newName} has already been deleted from the server`);
+          });
       }
       setNewName("");
       setNewNumber("");
