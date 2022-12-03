@@ -6,7 +6,6 @@ import axios from "axios";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [showAll, setShowAll] = useState(false);
@@ -26,33 +25,33 @@ const App = () => {
     event.preventDefault();
     console.log("button clicked", event.target);
 
-    let found = 0;
+    let found = false;
 
-    //current object
+    //object to be added
     const personObject = {
       name: newName,
       number: newNumber,
     };
 
-    //check if they exist already
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === newName) {
-        found = 1;
+        found = true;
       }
     }
 
-    // if they don't exist
-    if (found == 0) {
-      setPersons(persons.concat(personObject));
+    if (found === false) {
+      axios
+        .post("http://localhost:3001/persons", personObject)
+        .then((response) => {
+          console.log("HELLO");
+          console.log(response.data);
+          setPersons(persons.concat(response.data));
+          setNewName("");
+        });
+    } else {
+      window.alert(`${newName} is already in the phonebook`);
+      setNewName("");
     }
-
-    //if they do exist
-    if (found == 1) {
-      window.alert(newName + " is already in the phonebook");
-    }
-
-    // reset the value of newName for next addition
-    setNewName("");
   };
 
   const handleNameChange = (event) => {
