@@ -42,6 +42,29 @@ app.get("/info", (request, response) => {
   );
 });
 
+app.get("/info", (request, response) => {
+  let phonebookLength = persons.length;
+  const date = new Date();
+
+  response.send(
+    `<div>Phonebook has info for ${phonebookLength} people</div>
+      <div> ${date} </div>`
+  );
+});
+
+app.get(`/api/persons/:id`, (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find((person) => {
+    return person.id === id;
+  });
+
+  if (response) {
+    response.send(person);
+  } else {
+    response.status(404).end;
+  }
+});
+
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
