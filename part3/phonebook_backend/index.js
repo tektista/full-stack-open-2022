@@ -1,4 +1,4 @@
-const { response } = require("express");
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -88,6 +88,7 @@ const generateId = () => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
+  console.log(body)
   console.log(persons);
 
   if (!body.name) {
