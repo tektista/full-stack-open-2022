@@ -1,6 +1,4 @@
-
 const mongoose = require("mongoose");
-
 
 const url = `mongodb+srv://tektista:password12345@cluster0.lj2jvsw.mongodb.net/personApp?retryWrites=true&w=majority`;
 
@@ -16,8 +14,14 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  number: {
+    type: String,
+    required: true,
+  },
 });
 
 personSchema.set("toJSON", {
