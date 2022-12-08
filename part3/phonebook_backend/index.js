@@ -8,10 +8,10 @@ const Person = require("./models/person");
 const cors = require("cors");
 const morgan = require("morgan");
 
+app.use(express.static("build"));
 app.use(express.json());
 app.use(cors());
 app.use(morgan("tiny"));
-app.use(express.static("build"));
 
 // let persons = [
 //   {
@@ -79,7 +79,7 @@ app.get("/api/persons", (request, response) => {
 //   );
 // });
 
-app.get(`/api/persons/:id`, (request, response) => {
+app.get(`/api/persons/:id`, (request, response, next) => {
   // const id = Number(request.params.id);
   // const person = persons.find((person) => {
   //   return person.id === id;
@@ -100,28 +100,33 @@ app.get(`/api/persons/:id`, (request, response) => {
       }
     })
     .catch((error) => {
-      console.log(error);
-      response.status(400).send({ error: "malformatted id" });
+      next(error);
     });
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  console.log(id);
+app.delete("/api/persons/:id", (request, response, next) => {
+  // const id = Number(request.params.id);
+  // console.log(id);
 
-  console.log(persons);
-  persons = persons.filter((person) => person.id !== id);
-  console.log(persons);
+  // console.log(persons);
+  // persons = persons.filter((person) => person.id !== id);
+  // console.log(persons);
 
-  response.status(204).end();
+  // response.status(204).end();
+
+  Person.findByIdAndRemove(request.params.id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
-const generateId = () => {
-  const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
-  return maxId + 1;
-};
+// const generateId = () => {
+//   const maxId = persons.length > 0 ? Math.max(...persons.map((p) => p.id)) : 0;
+//   return maxId + 1;
+// };
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
   const body = request.body;
 
   if (!body.name) {
@@ -169,6 +174,16 @@ app.post("/api/persons", (request, response) => {
   // persons = persons.concat(person);
   // response.send(person);
 });
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3003;
 console.log(PORT);
