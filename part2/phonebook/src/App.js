@@ -50,17 +50,22 @@ const App = () => {
     }
 
     if (found === false) {
-      personService.create(personObject).then((response) => {
-        console.log("HELLO");
-        console.log(response.data);
-        setPersons(persons.concat(response.data));
-        setMessage(`${newName} was succesfully added`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-        setNewName("");
-        setNewNumber("");
-      });
+      personService
+        .create(personObject)
+        .then((response) => {
+          console.log("HELLO");
+          console.log(response.data);
+          setPersons(persons.concat(response.data));
+          setMessage(`${newName} was succesfully added`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+        });
     } else {
       if (
         window.confirm(
