@@ -1,74 +1,100 @@
-
+require("dotenv").config();
 const express = require("express");
 const app = express();
+const Person = require("./models/person");
+
+// const mongoose = require("mongoose");
+
 const cors = require("cors");
 const morgan = require("morgan");
+const { pluralize } = require("mongoose");
 
 app.use(express.json());
 app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.static("build"));
 
-let persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
+// let persons = [
+//   {
+//     id: 1,
+//     name: "Arto Hellas",
+//     number: "040-123456",
+//   },
+//   {
+//     id: 2,
+//     name: "Ada Lovelace",
+//     number: "39-44-5323523",
+//   },
+//   {
+//     id: 3,
+//     name: "Dan Abramov",
+//     number: "12-43-234345",
+//   },
+//   {
+//     id: 4,
+//     name: "Mary Poppendieck",
+//     number: "39-23-6423122",
+//   },
 
-const personsLength = persons.length;
+// const url = `mongodb+srv://tektista:password12345@cluster0.lj2jvsw.mongodb.net/personApp?retryWrites=true&w=majority`;
+
+// const url = process.env.MONGODB_URI
+
+// //connect to mongoose using URL
+// // ALLOW PERMISSION ON MONGO DB ATLAS
+// mongoose.connect(url);
+
+// // how objects are to be stored in the personSchema variable
+// const personSchema = new mongoose.Schema({
+//   name: String,
+//   number: String,
+// });
+
+// personSchema.set("toJSON", {
+//   transform: (document, returnedObject) => {
+//     returnedObject.id = returnedObject._id.toString();
+//     delete returnedObject._id;
+//     delete returnedObject.__v;
+//   },
+// });
+
+// //singular name of the model
+// const Person = mongoose.model("Person", personSchema);
+
+// // const personsLength = persons.length;
 
 app.get("/api/persons", (request, response) => {
-  response.send(persons);
+  // response.send(persons);
+  Person.find({}).then((persons) => {
+    response.json(persons);
+  });
 });
 
-app.get("/info", (request, response) => {
-  let phonebookLength = persons.length;
-  const date = new Date();
+// app.get("/info", (request, response) => {
+//   let phonebookLength = persons.length;
+//   const date = new Date();
 
-  response.send(
-    `<div>Phonebook has info for ${phonebookLength} people</div>
-    <div> ${date} </div>`
-  );
-});
-
-app.get("/info", (request, response) => {
-  let phonebookLength = persons.length;
-  const date = new Date();
-
-  response.send(
-    `<div>Phonebook has info for ${phonebookLength} people</div>
-      <div> ${date} </div>`
-  );
-});
+//   response.send(
+//     `<div>Phonebook has info for ${phonebookLength} people</div>
+//       <div> ${date} </div>`
+//   );
+// });
 
 app.get(`/api/persons/:id`, (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => {
-    return person.id === id;
-  });
+  // const id = Number(request.params.id);
+  // const person = persons.find((person) => {
+  //   return person.id === id;
+  // });
 
-  if (response) {
-    response.send(person);
-  } else {
-    response.status(404).end();
-  }
+  // if (response) {
+  //   response.send(person);
+  // } else {
+  //   response.status(404).end();
+  // }
+
+  Person.findById(request.params.id).then((person) => {
+    response.json(person);
+  });
 });
 
 app.delete("/api/persons/:id", (request, response) => {
@@ -89,7 +115,7 @@ const generateId = () => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
-  console.log(body)
+  console.log(body);
   console.log(persons);
 
   if (!body.name) {
@@ -122,7 +148,7 @@ app.post("/api/persons", (request, response) => {
   response.send(person);
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 console.log(PORT);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
