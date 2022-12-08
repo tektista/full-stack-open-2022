@@ -69,15 +69,16 @@ app.get("/api/persons", (request, response) => {
   });
 });
 
-// app.get("/info", (request, response) => {
-//   let phonebookLength = persons.length;
-//   const date = new Date();
-
-//   response.send(
-//     `<div>Phonebook has info for ${phonebookLength} people</div>
-//       <div> ${date} </div>`
-//   );
-// });
+app.get("/info", (request, response, next) => {
+  const date = new Date();
+  Person.find({})
+    .then((persons) => {
+      response.send(
+        `<p>Phonebook has info for ${persons.length} people</p> <p>${date}</p>`
+      );
+    })
+    .catch((error) => next(error));
+});
 
 app.get(`/api/persons/:id`, (request, response, next) => {
   // const id = Number(request.params.id);
