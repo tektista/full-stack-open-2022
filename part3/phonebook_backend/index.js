@@ -115,37 +115,51 @@ const generateId = () => {
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
-  console.log(body);
-  console.log(persons);
 
   if (!body.name) {
-    return response.status(400).json({
-      error: "name missing",
-    });
+    return response.status(400).json({ error: "name missing" });
   }
 
   if (!body.number) {
-    return response.status(400).json({
-      error: "number missing",
-    });
+    return response.status(400).json({ error: "number missing" });
   }
 
-  for (let i = 0; i < persons.length; i++) {
-    if (persons[i].name.includes(body.name)) {
-      return response.status(400).json({
-        error: "name must be unique",
-      });
-    }
-  }
-
-  const person = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
     number: body.number,
-  };
+  });
 
-  persons = persons.concat(person);
-  response.send(person);
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
+  // if (!body.name) {
+  //   return response.status(400).json({
+  //     error: "name missing",
+  //   });
+  // }
+
+  // if (!body.number) {
+  //   return response.status(400).json({
+  //     error: "number missing",
+  //   });
+  // }
+
+  // for (let i = 0; i < persons.length; i++) {
+  //   if (persons[i].name.includes(body.name)) {
+  //     return response.status(400).json({
+  //       error: "name must be unique",
+  //     });
+  //   }
+  // }
+
+  // const person = {
+  //   id: generateId(),
+  //   name: body.name,
+  //   number: body.number,
+  // };
+
+  // persons = persons.concat(person);
+  // response.send(person);
 });
 
 const PORT = process.env.PORT || 3003;
