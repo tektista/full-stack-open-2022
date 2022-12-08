@@ -130,13 +130,13 @@ app.delete("/api/persons/:id", (request, response, next) => {
 app.post("/api/persons", (request, response, next) => {
   const body = request.body;
 
-  if (!body.name) {
-    return response.status(400).json({ error: "name missing" });
-  }
+  // if (!body.name) {
+  //   return response.status(400).json({ error: "name missing" });
+  // }
 
-  if (!body.number) {
-    return response.status(400).json({ error: "number missing" });
-  }
+  // if (!body.number) {
+  //   return response.status(400).json({ error: "number missing" });
+  // }
 
   const person = new Person({
     name: body.name,
@@ -206,6 +206,8 @@ const errorHandler = (error, request, response, next) => {
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message });
   }
+
+  next(error);
 };
 
 app.use(errorHandler);
