@@ -7,7 +7,6 @@ const Person = require("./models/person");
 
 const cors = require("cors");
 const morgan = require("morgan");
-const { pluralize } = require("mongoose");
 
 app.use(express.json());
 app.use(cors());
@@ -92,9 +91,18 @@ app.get(`/api/persons/:id`, (request, response) => {
   //   response.status(404).end();
   // }
 
-  Person.findById(request.params.id).then((person) => {
-    response.json(person);
-  });
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      response.status(400).send({ error: "malformatted id" });
+    });
 });
 
 app.delete("/api/persons/:id", (request, response) => {
