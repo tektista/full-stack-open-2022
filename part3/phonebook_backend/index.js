@@ -130,6 +130,10 @@ app.delete("/api/persons/:id", (request, response, next) => {
 app.post("/api/persons", (request, response, next) => {
   const body = request.body;
 
+  // if (Person.find({ name: body.name } === true)) {
+  //   return response.status(400).json({ error: "name already exists" });
+  // }
+
   // if (!body.name) {
   //   return response.status(400).json({ error: "name missing" });
   // }
@@ -212,8 +216,8 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3003;
-console.log(PORT);
+const PORT = process.env.PORT || 3001;
+console.log("Running ", PORT);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
