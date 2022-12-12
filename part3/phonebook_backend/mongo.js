@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const mongoose = require("mongoose");
 
 if (process.argv.length < 2) {
@@ -23,7 +24,7 @@ const Person = mongoose.model("Person", personSchema);
 if (process.argv.length > 2) {
   mongoose
     .connect(url)
-    .then((result) => {
+    .then(() => {
       console.log("connected");
 
       const person = new Person({

@@ -80,7 +80,7 @@ app.get("/info", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-app.get(`/api/persons/:id`, (request, response, next) => {
+app.get("/api/persons/:id", (request, response, next) => {
   // const id = Number(request.params.id);
   // const person = persons.find((person) => {
   //   return person.id === id;
@@ -116,7 +116,7 @@ app.delete("/api/persons/:id", (request, response, next) => {
   // response.status(204).end();
 
   Person.findByIdAndRemove(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));
@@ -184,12 +184,12 @@ app.post("/api/persons", (request, response, next) => {
 });
 
 app.put("/api/persons/:id", (request, response, next) => {
-  const body = request.body;
+  const body = request.body
 
   const person = {
     name: body.name,
     number: body.number,
-  };
+  }
 
   Person.findByIdAndUpdate(request.params.id, person, {
     new: true,
@@ -216,6 +216,7 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler);
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3001;
 console.log("Running ", PORT);
 app.listen(PORT, () => {

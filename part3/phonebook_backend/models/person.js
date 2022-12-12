@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 // const uniqueValidator = require("mongoose-unique-validator");
 
-const url = `mongodb+srv://tektista:password12345@cluster0.lj2jvsw.mongodb.net/personApp?retryWrites=true&w=majority`;
+const url = "mongodb+srv://tektista:password12345@cluster0.lj2jvsw.mongodb.net/personApp?retryWrites=true&w=majority";
 
 console.log("connecting to", url);
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log("connected to MongoDB");
   })
   .catch((error) => {
