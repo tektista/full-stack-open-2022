@@ -35,6 +35,7 @@ const App = () => {
     event.preventDefault();
     console.log("button clicked", event.target);
 
+    //found var
     let found = false;
 
     //object to be added
@@ -43,6 +44,11 @@ const App = () => {
       number: newNumber,
     };
 
+    const existingPerson = persons.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    //if person is found
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === newName) {
         found = true;
@@ -66,7 +72,12 @@ const App = () => {
         .catch((error) => {
           setMessage(error.response.data.error);
         });
-    } else {
+    }
+
+    //if there is an existing person and their number does not equal the number thats typed in
+    if (existingPerson && existingPerson.number !== newNumber) {
+
+      
       if (
         window.confirm(
           `${newName} is already in the phonebook, replace the old number?`
@@ -74,6 +85,8 @@ const App = () => {
       ) {
         const person = persons.find((person) => person.name === newName);
         const changedPerson = { ...person, number: newNumber };
+
+        console.log(changedPerson);
         personService
           .update(person.id, changedPerson)
           .then((response) => {
@@ -86,14 +99,18 @@ const App = () => {
               setMessage(null);
             }, 5000);
           })
-
           .catch((error) => {
-            setMessage(`${newName} has already been deleted from the server`);
+            setMessage(`${newName} ${error} has already been deleted from the server`);
           });
       }
-      setNewName("");
-      setNewNumber("");
     }
+
+    if (existingPerson && existingPerson.number === newNumber) {
+      alert(`${newName} is already added to phonebook`);
+    }
+
+    setNewName("");
+    setNewNumber("");
   };
 
   const deletePerson = (id, name) => {
