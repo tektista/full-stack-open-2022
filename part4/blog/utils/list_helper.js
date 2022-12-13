@@ -37,8 +37,6 @@ const mostBlogs = (blogList) => {
       (authorBlog) => authorBlog.author === currentAuthor
     );
 
-    console.log();
-
     if (authorExists) {
       authorBlogCount.forEach((authorObj) => {
         if (authorObj.author === currentAuthor) {
@@ -61,14 +59,41 @@ const mostBlogs = (blogList) => {
     author: authorWithMostBlogs.author,
     blogs: authorWithMostBlogs.blogs,
   };
+};
 
-  // blogList.forEach((blog) => {
-  //     const author = blog.author
-  //     const authorExists = authorBlogCount.find((authorBlog) => authorBlog.author === author)
-  //     if (authorExists) {
-  //         authorExists.blogs = authorExists.blogs + 1
-  //     } else {
-  //         authorBlogCount.push({
+const mostLikes = (blogList) => {
+  const authorLikeCount = [];
+
+  blogList.forEach((blog) => {
+    const currentAuthor = blog.author;
+    const authorExists = authorLikeCount.find(
+      (authorLike) => authorLike.author === currentAuthor
+    );
+
+    if (authorExists) {
+      authorLikeCount.forEach((authorObj) => {
+        if (authorObj.author === currentAuthor) {
+          authorObj.likes = authorObj.likes + blog.likes;
+        }
+      });
+    } else {
+      authorLikeCount.push({
+        author: currentAuthor,
+        likes: blog.likes,
+      });
+    }
+  });
+
+  const authorWithMostLikes = authorLikeCount.reduce((prev, curr) => {
+    return prev.likes > curr.likes ? prev : curr;
+  });
+
+  return {
+    author: authorWithMostLikes.author,
+    likes: authorWithMostLikes.likes,
+  };
+
+
 };
 
 module.exports = {
@@ -76,4 +101,5 @@ module.exports = {
   totalLikes,
   favouriteBlog,
   mostBlogs,
+  mostLikes,
 };
